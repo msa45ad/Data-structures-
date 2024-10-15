@@ -1,9 +1,6 @@
 #include<stdio.h>
 #include<stdbool.h>
 #define max 5
-int que_arr[max];
-int front=-1;
-int rear=-1;
 void add(int que_arr[],int *rear,int *front,int val)
 {
     if((*rear)==max-1)
