@@ -6,6 +6,7 @@ void add(int que_arr[],int *rear,int *front,int val)
     if((*rear)==max-1)
     {
         printf("overflowed\n");
+        return -1;
     }
     else
     {
@@ -23,6 +24,7 @@ int del(int que_arr[],int *rear,int *front)
     if((*rear)==-1 || (*rear)<(*front))
     {
         printf("underflowed\n");
+        return;
     }
     else
     {
