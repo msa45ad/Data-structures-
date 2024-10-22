@@ -47,6 +47,8 @@ void push(int stack_arr[],int *top,int v)
     if(*top==max-1)
     {
         printf("stack is overloaded\n");
+        return -1;
+        
     }
     else
     {
@@ -60,6 +62,7 @@ int pop(int stack_arr[],int *top)
    if(*top==-1)
     {
         printf("stack is underflowed\n");
+        return;
     }
     else
     {
