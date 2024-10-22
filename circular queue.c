@@ -46,6 +46,7 @@ void insert(int que_arr[],int *front,int *rear,int val)
     if((*rear+1)%max==*front)
     {
         printf("overflow\n");
+        return -1;
     }
     else if(*front==-1)
     {
@@ -59,6 +60,7 @@ int del(int que_arr[],int *front,int *rear)
     if(*front==-1)
     {
         printf("underflow\n");
+        return;
     }
     int v;
     v=que_arr[*front];
