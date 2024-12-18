@@ -1,139 +1,93 @@
-#include<stdio.h>
-#include<string.h>
-#define max 50
-char stack_arr[max];
-char post[max];
-int top=-1;
-void push(char val)
-{
-    if(top==max-1)
-    {
-        printf("stack is overflowed\n");
-    }
-    else
-    {
+#include <stdio.h>
+#include <string.h>
+#define MAX 50
+
+char stack_arr[MAX];
+char post[MAX];
+int top = -1;
+
+// Push an element onto the stack
+void push(char val) {
+    if (top == MAX - 1) {
+        printf("Stack overflow\n");
+    } else {
         top++;
-        stack_arr[top]=val;
+        stack_arr[top] = val;
     }
 }
-char pop()
-{
-    if(top==-1)
-    {
-        printf("underflow");
-    }
-    else
-    {
-        char v;
-        v=stack_arr[top];
-        top--;
-        return v;
 
+// Pop an element from the stack
+char pop() {
+    if (top == -1) {
+        printf("Stack underflow\n");
+        return '\0'; // Return null character for underflow
+    } else {
+        return stack_arr[top--];
     }
 }
-int int_to_post(char ar[],int size)
-{
-    char op;
-    int j=0;
-    int i;
-    int next;
-    for(i=0;i<size;i++)
-    {
-        op=ar[i];
-        if (op=='+')
-        {
-            while(top!=-1 && precedence(stack_arr[top])>=precedence(op))
-            {
-                next=pop();
-                post[j]=next;
-                j++;
-            }
-            push(op);
-        }
-        else if (op=='-')
-        {
-            while(top!=-1 && precedence(stack_arr[top])>=precedence(op))
-            {
-                next=pop();
-                post[j]=next;
-                j++;
-            }
-            push(op);
-        }
-           else if (op=='*')
-        {
-            while(top!=-1 && precedence(stack_arr[top])>=precedence(op))
-            {
-                next=pop();
-                post[j]=next;
-                j++;
-            }
-            push(op);
-        }
-           else if (op=='/')
-        {
-            while(top!=-1 && precedence(stack_arr[top])>=precedence(op))
-            {
-                next=pop();
-                post[j]=next;
-                j++;
-            }
-            push(op);
-        }
-        else if (op=='(')
-        {
-            push(op);
-        }
-        else if(op==')')
-        {
-            while((next=pop())!='(')
-            {
-                post[j]=next;
-                j++;
-            }
-        }
-        else
-        {
-            post[j]=op;
-            j++;
-        }
 
-    }
-    while(top!=-1)
-    {
-        post[j]=pop();
-        j++;
-    }
-    post[j]='\0';
-}
-void precedence(char op)
-{
-    if (op=='+' || op=='-')
-    {
+// Get precedence of operators
+int precedence(char op) {
+    if (op == '+' || op == '-') {
         return 1;
-    }
-    else if(op=='*'|| op=='/')
-    {
+    } else if (op == '*' || op == '/') {
         return 2;
+    } else {
+        return 0; // Default precedence for non-operators
     }
-}
-char prnt(int size)
-{
-    int i;
-    printf("Desired output is:\n");
-    for(i=0;i<size;i++)
-    {
-        printf("%c",post[i]);
-    }
-}
-int main()
-{
-    char ex[50];
-    printf("enter the expression:");
-    gets(ex);
-    int l;
-    l=strlen(ex);
-    int_to_post(ex,l);
-    prnt(l);
 }
 
+// Convert infix to postfix
+void int_to_post(char ar[], int size) {
+    char op;
+    int j = 0;
+
+    for (int i = 0; i < size; i++) {
+        op = ar[i];
+
+        if (op == '(') {
+            push(op);
+        } else if (op == ')') {
+            // Pop until '(' is found
+            while (top != -1 && stack_arr[top] != '(') {
+                post[j++] = pop();
+            }
+            pop(); // Remove '(' from the stack
+        } else if (op == '+' || op == '-' || op == '*' || op == '/') {
+            // Handle operators
+            while (top != -1 && precedence(stack_arr[top]) >= precedence(op)) {
+                post[j++] = pop();
+            }
+            push(op);
+        } else {
+            // Operands go directly to postfix
+            post[j++] = op;
+        }
+    }
+
+    // Pop any remaining operators
+    while (top != -1) {
+        post[j++] = pop();
+    }
+
+    post[j] = '\0'; // Null-terminate the postfix expression
+}
+
+// Print the postfix expression
+void prnt() {
+    printf("Desired output is:\n%s\n", post);
+}
+
+int main() {
+    char ex[50];
+
+    printf("Enter the expression: ");
+    fgets(ex, sizeof(ex), stdin);
+    ex[strcspn(ex, "\n")] = '\0'; // Remove newline character if present
+
+    int l = strlen(ex);
+    int_to_post(ex, l);
+    prnt();
+
+    return 0;
+}
