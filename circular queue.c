@@ -21,33 +21,25 @@ int main() {
         printf("Enter your preference: ");
         scanf("%d", &pref);
 
-        switch (pref) {
-            case 1:
-                printf("Enter the value: ");
-                scanf("%d", &v);
-                if (insert(&front, &rear, que_arr, v) == -1) {
-                    printf("Queue is full (Overflow)\n");
-                }
-                break;
-
-            case 2:
-                v = del(&front, &rear, que_arr);
-                if (v != -1) {
-                    printf("Value deleted is %d\n", v);
-                } else {
-                    printf("Queue is empty (Underflow)\n");
-                }
-                break;
-
-            case 3:
-                display(&front, &rear, que_arr);
-                break;
-
-            case 4:
-                return 0;
-
-            default:
-                printf("Invalid preference\n");
+        if (pref == 1) {
+            printf("Enter the value: ");
+            scanf("%d", &v);
+            if (insert(&front, &rear, que_arr, v) == -1) {
+                printf("Queue is full (Overflow)\n");
+            }
+        } else if (pref == 2) {
+            v = del(&front, &rear, que_arr);
+            if (v != -1) {
+                printf("Value deleted is %d\n", v);
+            } else {
+                printf("Queue is empty (Underflow)\n");
+            }
+        } else if (pref == 3) {
+            display(&front, &rear, que_arr);
+        } else if (pref == 4) {
+            return 0;
+        } else {
+            printf("Invalid preference\n");
         }
     }
 }
