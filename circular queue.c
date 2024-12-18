@@ -1,92 +1,97 @@
-#include<stdio.h>
-#include<stdbool.h>
-#define max 5
-int main()
-{
-    int front=-1;
-    int rear=-1;
-    int que_arr[max];
-    int val;
-    int pref;
+#include <stdio.h>
+#include <stdbool.h>
+#define MAX 5
+
+int insert(int *front, int *rear, int que_arr[], int val);
+int del(int *front, int *rear, int que_arr[]);
+void display(int *front, int *rear, int que_arr[]);
+
+int main() {
+    int front = -1;
+    int rear = -1;
+    int que_arr[MAX];
+    int pref, v;
+
     printf("Select 1 to insert()\n");
     printf("Select 2 to delete()\n");
     printf("Select 3 to display()\n");
-    printf("Select 4 to terminate\n");
-    while(true)
-    {
-        printf("Enter the preference:\n");
-        scanf("%d",&pref);
-        if(pref==1)
-        {
-            printf("enter the value to be inserted:\n");
-            scanf("%d",&val);
-            insert(que_arr,&front,&rear,val);
-        }
-        else if(pref==2)
-        {
-            val=del(que_arr,&front,&rear);
-            printf("Element deleted from the circular queue is :%d\n",val);
-        }
-        else if(pref==3)
-        {
-            display(que_arr,&front,&rear);
-        }
-        else if(pref==4)
-        {
-            break;
-        }
-        else
-        {
-            printf("preference not found\n");
+    printf("Select 4 to exit\n");
+
+    while (true) {
+        printf("Enter your preference: ");
+        scanf("%d", &pref);
+
+        switch (pref) {
+            case 1:
+                printf("Enter the value: ");
+                scanf("%d", &v);
+                if (insert(&front, &rear, que_arr, v) == -1) {
+                    printf("Queue is full (Overflow)\n");
+                }
+                break;
+
+            case 2:
+                v = del(&front, &rear, que_arr);
+                if (v != -1) {
+                    printf("Value deleted is %d\n", v);
+                } else {
+                    printf("Queue is empty (Underflow)\n");
+                }
+                break;
+
+            case 3:
+                display(&front, &rear, que_arr);
+                break;
+
+            case 4:
+                return 0;
+
+            default:
+                printf("Invalid preference\n");
         }
     }
 }
-void insert(int que_arr[],int *front,int *rear,int val)
-{
-    if((*rear+1)%max==*front)
-    {
-        printf("overflow\n");
+
+int insert(int *front, int *rear, int que_arr[], int val) {
+    if ((*rear + 1) % MAX == *front) {
         return -1;
     }
-    else if(*front==-1)
-    {
-        *front=0;
+    if (*front == -1) {
+        *front = 0;
     }
-    *rear=(*rear+1)%max;
-    que_arr[*rear]=val;
+    *rear = (*rear + 1) % MAX;
+    que_arr[*rear] = val;
+    return 0;
 }
-int del(int que_arr[],int *front,int *rear)
-{
-    if(*front==-1)
-    {
-        printf("underflow\n");
+
+int del(int *front, int *rear, int que_arr[]) {
+    if (*front == -1) {
+        return -1;
+    }
+    int val = que_arr[*front];
+    if (*front == *rear) {
+        *front = -1;
+        *rear = -1;
+    } else {
+        *front = (*front + 1) % MAX;
+    }
+    return val;
+}
+
+void display(int *front, int *rear, int que_arr[]) {
+    if (*front == -1) {
+        printf("Queue is empty\n");
         return;
     }
-    int v;
-    v=que_arr[*front];
-    if(*rear==*front)
-    {
-        *rear=-1;
-        *front=-1;
-    }
-    else
-    {
-        *front=(*front+1)%max;
-    }
-    return v;
 
-}
-void display(int que_arr[],int *front,int *rear)
-{
-    printf("Elements in the queue are:\n");
-    int i=*front;
-    while(true)
-    {
-        printf("%d\n",que_arr[i]);
-        if(i==*rear)
-        {
+    printf("Queue elements are:\n");
+    int i = *front;
+    while (true) {
+        printf("%d ", que_arr[i]);
+        if (i == *rear) {
             break;
         }
-        i=(i+1)%max;
+        i = (i + 1) % MAX;
     }
+    printf("\n");
 }
