@@ -17,50 +17,43 @@ int main()
     head=(struct node *)malloc(sizeof(struct node));
     int val;
     int pref;
-    int n;
-    printf("enter the no of nodes req:\n");
-    scanf("%d",&n);
-    printf("enter the value:\n");
-    scanf("%d",&val);
-     head->data=val;
-    head->link=NULL;
-    ptr=head;
-    int i;
-    for(i=0;i<n-1;i++)
-    {
-        printf("enter the value:\n");
-        scanf("%d",&val);
-        ptr=add(ptr,val);
-    }
-    printf("Select 1 to delete front()\n");
-    printf("Select 2 to delete rear()\n");
-    printf("Select 3 to delete at certain position()\n");
-    printf("Select 4 to exit()\n");
-    printf("Select 5 to display()\n");
+    head=NULL;
+    printf("Select 1 to Create()\n");
+    printf("Select 2 to delete front()\n");
+    printf("Select 3 to delete rear()\n");
+    printf("Select 4 to delete at certain position()\n");
+    printf("Select 5 to exit()\n");
+    printf("Select 6 to display()\n");
     while(true)
     {
         printf("enter the preference:\n");
         scanf("%d",&pref);
         if(pref==1)
         {
-            head=deletefront(head);
+            printf("enter the value:\n");
+            scanf("%d",&val);
+            head=add(head,val);
         }
         else if(pref==2)
         {
-            deleterear(head);
+            head=deletefront(head);
         }
         else if(pref==3)
+        {
+            deleterear(head);
+        }
+        else if(pref==4)
         {
             int pos;
             printf("enter the position to be deleted:\n");
             scanf("%d",&pos);
             deletepos(head,pos);
         }
-        else if(pref==4)
+        else if(pref==5)
         {
             break;
         }
-        else if(pref==5)
+        else if(pref==6)
         {
             display(head);
         }
@@ -129,10 +122,22 @@ void display(struct node *head)
 }
 struct node * add(struct node *head,int val)
 {
-    struct node *ptr;
+    struct node *ptr,*temp;
     ptr=(struct node *)malloc(sizeof(struct node));
     ptr->data=val;
     ptr->link=NULL;
-    head->link=ptr;
-    return ptr;
+    temp=head;
+    if(head==NULL)
+    {
+        head=ptr;
+    }
+    else
+    {
+        while(temp->link!=NULL)
+        {
+            temp=temp->link;
+        }
+        temp->link=ptr;
+    }
+    return head;
 }
